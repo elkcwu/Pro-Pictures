@@ -16,6 +16,7 @@ public class Producer {
 
     //this function send message to "topic"
     public void sendMessage(String message){
+        System.out.println("+++++++++++++++++++++++ sendMessage");
         logger.info((String.format("&&& --> Producing message --> %s", message)));
         this.kafkaTemplate.send(TOPIC, message);
     }

@@ -9,8 +9,9 @@ import org.springframework.stereotype.Service;
 public class Consumer {
     private final Logger logger = LoggerFactory.getLogger(Consumer.class);
 
-//    @KafkaListener(topics = "pictures", groupId = "picture_group")
-//    public void consume(String message){
-//        logger.info(String.format("+++ --> Consumed Message --> %s", message));
-//    }
+    //temporary disable kafka
+//    @KafkaListener(topics = "pictures", groupId = "group_id")
+    public void consume(String message){
+        logger.info(String.format("+++ --> Consumed Message --> %s", message));
+    }
 }
