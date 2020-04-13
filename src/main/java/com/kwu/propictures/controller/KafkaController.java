@@ -10,12 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/kafka")
 public class KafkaController {
-    private final Producer producer;
 
     @Autowired
-    public KafkaController(Producer producer) {
-        this.producer = producer;
-    }
+    Producer producer;
 
     @PostMapping("/publish")
     public void sendMessageToKafkaTopic(@RequestParam("message") String message){

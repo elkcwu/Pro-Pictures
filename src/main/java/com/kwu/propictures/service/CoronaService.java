@@ -1,9 +1,14 @@
 package com.kwu.propictures.service;
 
 import com.kwu.propictures.model.Coronavirus;
+import com.netflix.hystrix.contrib.javanica.annotation.HystrixCommand;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
+import org.springframework.context.annotation.Bean;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -12,19 +17,27 @@ import javax.annotation.PostConstruct;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 //https://www.youtube.com/watch?v=8hjNG9GZGnQ&t=2055s
 @Service
 public class CoronaService {
 //    String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_19-covid-Confirmed.csv";
     String VIRUS_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/csse_covid_19_time_series/time_series_covid19_confirmed_global.csv";
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Bean
+    public RestTemplate restTemplate(RestTemplateBuilder builder){
+        return builder.build();
+    }
+
     @Cacheable("corona")
-    @PostConstruct
-    @Scheduled(cron = "* 1 * * * *")
+    //@PostConstruct
+    //@Scheduled(cron = "* 1 * * * *")
+    @HystrixCommand(fallbackMethod = "getFallbackCorona")
     public List<Coronavirus> getCoronaLatest() throws IOException {
         List<Coronavirus> coronaList = new ArrayList<>();
-
-        RestTemplate restTemplate = new RestTemplate();
         String result = restTemplate.getForObject(VIRUS_DATA_URL, String.class);
         StringReader csvBodyReader = new StringReader(result);
         //java csv library
@@ -43,5 +56,8 @@ public class CoronaService {
         return coronaList;
     }
 
+    public List<Coronavirus> getFallbackCorona(){
+        return Arrays.asList(new Coronavirus("no virus", "country", 0,0,0));
+    }
 
 }

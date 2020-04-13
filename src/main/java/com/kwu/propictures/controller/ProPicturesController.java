@@ -3,6 +3,7 @@ package com.kwu.propictures.controller;
 import com.kwu.propictures.exception.ResourceNotFondException;
 import com.kwu.propictures.model.Picture;
 import com.kwu.propictures.model.PictureWrap;
+import com.kwu.propictures.repository.PicturesRepository;
 import com.kwu.propictures.service.PictureService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -14,7 +15,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-@CrossOrigin(origins="http://localhost:8085")
+@CrossOrigin(origins="http://localhost:8081")
 @RestController
 @RequestMapping("/proapi/v2")
 public class ProPicturesController {
@@ -24,7 +25,7 @@ public class ProPicturesController {
     ConcurrentMap<String, Picture> pictures = new ConcurrentHashMap<>();
 
     @GetMapping("/pictures")
-    public PictureWrap getAllProPictures() throws ParseException {
+    public List<Picture> getAllProPictures() throws ParseException {
        return picService.getAllProPictures();
     }
 
@@ -36,16 +37,14 @@ public class ProPicturesController {
         return ResponseEntity.ok().body(pic);
     }
 
-    //get from the below post
-    @GetMapping("/pictures/getnew/{id}")
-    public Picture getNewProPicture(@PathVariable(value = "id") Long pictureId) throws ParseException {
-        return pictures.get(pictureId.toString());
+    @PostMapping("/pictures")
+    public Picture addPicture(@Valid @RequestBody Picture picture){
+        return picService.addPicture(picture);
     }
 
-    @PostMapping("/pictures/add")
-    public Picture addPicture(@Valid @RequestBody Picture picture){
-        pictures.put(picture.getId().toString(), picture);  // use the concurrenthashmap
-        return picture;
+    @DeleteMapping("/pictures/{id}")
+    public Map<String, Boolean> deletePicture(@PathVariable(value = "id") Long pictureId) throws ResourceNotFondException {
+        return picService.deletePicture(pictureId);
     }
 
 

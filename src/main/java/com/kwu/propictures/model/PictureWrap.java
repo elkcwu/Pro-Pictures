@@ -9,6 +9,7 @@ public class PictureWrap {
     public List<Picture> getPictureList(){
         return pictureList;
     }
+
     public void setPictureList(List<Picture> pictureList){
         this.pictureList = pictureList;
     }

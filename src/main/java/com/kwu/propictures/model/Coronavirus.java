@@ -7,6 +7,16 @@ public class Coronavirus {
     private Integer preConfirmed;
     private Integer diffence;
 
+    public Coronavirus() {
+    }
+
+    public Coronavirus(String state, String country, Integer latestConfirmed, Integer preConfirmed, Integer diffence) {
+        this.state = state;
+        this.country = country;
+        this.latestConfirmed = latestConfirmed;
+        this.preConfirmed = preConfirmed;
+        this.diffence = diffence;
+    }
     public String getState() {
         return state;
     }
