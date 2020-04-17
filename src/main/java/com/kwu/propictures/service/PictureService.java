@@ -9,21 +9,30 @@ import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
+import javax.transaction.Transactional;
 import java.text.ParseException;
 import java.util.*;
 
 @Service
 @EnableSwagger2
+@Transactional
 public class PictureService {
 
     @Autowired
     PicturesRepository repository;
 
 //    @Cacheable("pictures")
-    public List<Picture> getAllProPictures() {
-        List<Picture> picturesList = new ArrayList<>();
-        repository.findAll().forEach(picturesList :: add);
-        return picturesList;
+//    public List<Picture> getAllProPictures(Long userid) {
+//        List<Picture> picturesList = new ArrayList<>();
+//        repository.findByUserId(userid).forEach(picturesList :: add);
+//        return picturesList;
+//    }
+
+    public List<Picture> getAllPicturesByUserid(Long userid){
+        List<Picture> picList = new ArrayList<>();
+        repository.findByUserId(userid)
+                .forEach(picList :: add);
+        return picList;
     }
 
 //    @Cacheable("picture")
@@ -35,6 +44,10 @@ public class PictureService {
 
     public Picture addPicture(Picture pic){
         return repository.save(pic);
+    }
+
+    public void updatePicture(Picture picture){
+        repository.save(picture);
     }
 
     public Map<String, Boolean> deletePicture(Long pictureId)  throws ResourceNotFondException{

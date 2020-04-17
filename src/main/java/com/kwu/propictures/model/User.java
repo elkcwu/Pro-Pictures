@@ -3,6 +3,7 @@ package com.kwu.propictures.model;
 import javax.persistence.*;
 
 @Entity
+@Access(AccessType.PROPERTY) //very important
 @Table(name = "user")
 public class User {
     private Long id;
@@ -12,6 +13,19 @@ public class User {
     private boolean active;
     private String email;
     private String gender;
+
+    //must have default constructor, Hibernate uses the default constructor to create entity objects.
+    public User(){}
+
+    public User(Long id, String username, String password, String roles, boolean active, String email, String gender) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.roles = roles;
+        this.active = active;
+        this.email = email;
+        this.gender = gender;
+    }
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

@@ -1,22 +1,29 @@
 package com.kwu.propictures.model;
 
-import javax.persistence.Id;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
+import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
 
 
 @Entity
 public class Picture{
+
     private Long id;
     @NotBlank(message = "Picture name is mandatory")  //exception handling, look at GlobalExceptionHandler
     private String picturename;
     private String picturelink;
     private Date takendate;
-    private Long userid;
     private Long mylike;
+    private User user;  //many to one relationship
+
+    public Picture(Long id, @NotBlank(message = "Picture name is mandatory") String picturename, String picturelink, Date takendate, Long mylike, User user) {
+        this.id = id;
+        this.picturename = picturename;
+        this.picturelink = picturelink;
+        this.takendate = takendate;
+        this.mylike = mylike;
+        this.user = user;
+    }
 
     public Picture(){}
 
@@ -54,14 +61,6 @@ public class Picture{
         this.takendate = takendate;
     }
 
-    public Long getUserid() {
-        return userid;
-    }
-
-    public void setUserid(Long userid) {
-        this.userid = userid;
-    }
-
     public Long getMylike() {
         return mylike;
     }
@@ -70,4 +69,12 @@ public class Picture{
         this.mylike = mylike;
     }
 
+    @ManyToOne(targetEntity = User.class)  //very important
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
 }
