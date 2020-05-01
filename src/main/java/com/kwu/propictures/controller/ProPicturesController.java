@@ -16,7 +16,7 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentMap;
 
-@CrossOrigin(origins={"http://localhost:8081", "http://localhost:3000"})
+@CrossOrigin(origins={"http://localhost:8081", "http://localhost:3000"}) // all origins and GET, HEAD, and POST methods are allowed
 @RestController
 @RequestMapping("/proapi/v2")
 public class ProPicturesController {
