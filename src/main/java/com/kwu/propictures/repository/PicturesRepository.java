@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 @Repository
-public interface PicturesRepository extends CrudRepository<Picture, Long> {//, PicturesRepositoryCustom {
+public interface PicturesRepository extends CrudRepository<Picture, Long> {
     public List<Picture> findByUserId(Long userid); //method naming is very important here
     //here the name means: find the pictures by the User object of id
     //https://www.youtube.com/watch?v=_Jnu_jHfQbM
