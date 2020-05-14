@@ -1,5 +1,7 @@
 package com.kwu.propictures.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import java.util.Date;
@@ -14,15 +16,17 @@ public class Picture{
     private String picturelink;
     private Date takendate;
     private Long mylike;
-    private User user;  //many to one relationship
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+    @JoinColumn(name = "user_id")
+    private User user;  //many to one relationship -- it is not a good design to attached User object here for security reason
 
-    public Picture(Long id, @NotBlank(message = "Picture name is mandatory") String picturename, String picturelink, Date takendate, Long mylike, User user) {
+    public Picture(Long id, @NotBlank(message = "Picture name is mandatory") String picturename, String picturelink, Date takendate, Long mylike){//}, User user) {
         this.id = id;
         this.picturename = picturename;
         this.picturelink = picturelink;
         this.takendate = takendate;
         this.mylike = mylike;
-        this.user = user;
+//        this.user = user;
     }
 
     public Picture(){}
@@ -69,7 +73,7 @@ public class Picture{
         this.mylike = mylike;
     }
 
-    @ManyToOne(targetEntity = User.class)  //very important
+    @ManyToOne(targetEntity = User.class, fetch = FetchType.LAZY)  //very important, lazy loading
     public User getUser() {
         return user;
     }

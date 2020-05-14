@@ -12,6 +12,7 @@ package com.kwu.propictures.security;
 //import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 //import org.springframework.security.crypto.password.PasswordEncoder;
 
+//https://www.youtube.com/watch?v=caCJAJC41Rk
 //@EnableWebSecurity
 //public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 

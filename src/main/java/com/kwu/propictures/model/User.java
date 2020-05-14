@@ -14,6 +14,7 @@ public class User {
     private String email;
     private String gender;
 
+
     //must have default constructor, Hibernate uses the default constructor to create entity objects.
     public User(){}
 

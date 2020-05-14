@@ -3,6 +3,7 @@ package com.kwu.propictures.service;
 import com.kwu.propictures.exception.ResourceNotFondException;
 import com.kwu.propictures.model.Picture;
 import com.kwu.propictures.model.PictureWrap;
+import com.kwu.propictures.model.User;
 import com.kwu.propictures.repository.PicturesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
@@ -40,6 +41,11 @@ public class PictureService {
         Optional<Picture> picture = repository.findById(pictureId);
         picture.orElseThrow(()-> new ResourceNotFondException("No resouce is found with this ID: " + pictureId));
         return picture.get();
+    }
+
+    public Picture getPicByUserIdandPicId(Long userId, Long picId) {
+        Picture pic = repository.getPictureByPicIdandUserId(userId, picId);
+        return pic;
     }
 
     public Picture addPicture(Picture pic){
