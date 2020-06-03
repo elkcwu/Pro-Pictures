@@ -8,7 +8,7 @@ import java.util.Date;
 
 
 @Entity
-public class Picture{
+public class aPicture{
 
     private Long id;
     @NotBlank(message = "Picture name is mandatory")  //exception handling, look at GlobalExceptionHandler
