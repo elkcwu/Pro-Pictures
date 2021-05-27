@@ -11,7 +11,8 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @SpringBootApplication
 @EnableCaching
 @EnableCircuitBreaker
-@EnableEurekaServer
+@EnableEurekaServer//
+
 public class ProPicturesApplication {
 
 	public static void main(String[] args) {
