@@ -1,0 +1,6 @@
+package com.kwu.propictures.configuration;
+
+import jdk.nashorn.internal.ir.annotations.Ignore;
+
+public class FlagpickerDBConfig {
+}

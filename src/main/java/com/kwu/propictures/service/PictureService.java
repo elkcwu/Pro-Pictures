@@ -15,7 +15,8 @@ import java.text.ParseException;
 import java.util.*;
 
 @Service
-@EnableSwagger2
+@EnableSwagger2  //http://localhost:8081/v2/api-docs
+                 //http://localhost:8081/swagger-ui.html
 @Transactional
 public class PictureService {
 
