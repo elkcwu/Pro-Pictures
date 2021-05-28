@@ -12,7 +12,7 @@ import org.springframework.cloud.netflix.eureka.server.EnableEurekaServer;
 @EnableCaching
 @EnableCircuitBreaker
 @EnableEurekaServer//
-
+//to test rebase - sub branch
 public class ProPicturesApplication {
 
 	public static void main(String[] args) {
