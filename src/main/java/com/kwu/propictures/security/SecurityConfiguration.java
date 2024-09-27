@@ -14,6 +14,7 @@ package com.kwu.propictures.security;
 
 //https://www.youtube.com/watch?v=caCJAJC41Rk
 //@EnableWebSecurity
+//@EnableGlobalMethodSecurity(prePostEnabled = true)
 //public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 
 //    @Autowired

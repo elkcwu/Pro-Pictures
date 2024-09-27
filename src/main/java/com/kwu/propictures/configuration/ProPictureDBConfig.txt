@@ -1,0 +1,65 @@
+package com.kwu.propictures.configuration;
+
+
+import com.kwu.propictures.model.Picture;
+import jdk.nashorn.internal.ir.annotations.Ignore;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.boot.context.properties.ConfigurationProperties;
+
+import org.springframework.boot.jdbc.DataSourceBuilder;
+import org.springframework.boot.orm.jpa.EntityManagerFactoryBuilder;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Primary;
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PropertiesLoaderUtils;
+import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.orm.jpa.JpaTransactionManager;
+import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
+import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.stream.Collectors;
+
+@Configuration
+@EnableTransactionManagement
+@EnableJpaRepositories(entityManagerFactoryRef = "propictureEntityManager",
+transactionManagerRef = "propictureTransactionManager",
+basePackages = "com.kwu.propictures.repository")
+public class ProPictureDBConfig {
+
+    @Primary
+    @Bean(name="datasource")
+    @ConfigurationProperties(prefix="spring.datasource")
+    public DataSource mysqlDataSource(){
+        return DataSourceBuilder.create().build();
+    }
+
+    @Primary
+    @Bean(name = "propictureEntityManager")
+    public LocalContainerEntityManagerFactoryBean mysqlEntityManagerFactory(EntityManagerFactoryBuilder factoryBuilder){
+        Map<String, Object> hibernateProperties = new HashMap<>();
+        hibernateProperties.put("hibernate.hbm2ddl.auto", "update");
+        hibernateProperties.put("hibernate.dialect", "org.hibernate.dialect.MySQL5Dialect");
+        return factoryBuilder.dataSource(mysqlDataSource())
+                      .properties(hibernateProperties)
+                        .packages(Picture.class)
+                        .persistenceUnit("propicture")
+                        .build();
+    }
+
+    @Primary
+    @Bean(name = "propictureTransactionManager")
+    public PlatformTransactionManager mysqlTransactionManager(@Qualifier("propictureEntityManager")
+                                                                          EntityManagerFactory entityManagerFactory){
+        return new JpaTransactionManager(entityManagerFactory);
+    }
+
+}

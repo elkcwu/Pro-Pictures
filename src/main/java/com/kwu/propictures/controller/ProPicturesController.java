@@ -1,11 +1,14 @@
 package com.kwu.propictures.controller;
 
+import com.kwu.propictures.dao.ProPicDao;
 import com.kwu.propictures.exception.ResourceNotFondException;
 import com.kwu.propictures.model.Picture;
 import com.kwu.propictures.model.PictureWrap;
 import com.kwu.propictures.model.User;
 import com.kwu.propictures.repository.PicturesRepository;
+import com.kwu.propictures.service.GreetingService;
 import com.kwu.propictures.service.PictureService;
+import lombok.var;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -23,6 +26,8 @@ import java.util.concurrent.ConcurrentMap;
 public class ProPicturesController {
     @Autowired
     PictureService picService;
+    @Autowired
+    ProPicDao proPicDao;  //jdbc
 
     ConcurrentMap<String, Picture> pictures = new ConcurrentHashMap<>();
 
@@ -31,10 +36,21 @@ public class ProPicturesController {
         return "You are successfully access the ProPicture service";
     }
 
-    @GetMapping("/user/{userid}/pictures")
+    @GetMapping("/user/pictures/names") //use jdbc
+    public List<String> getPictureNameJdbc(){
+        return proPicDao.getAllPicturesName();
+    }
+
+    @GetMapping("/user/{userid}/pictures") //use JPA
     public List<Picture> getAllPicturesByUserid(@PathVariable Long userid) throws ResourceNotFondException, MethodArgumentNotValidException {
         return picService.getAllPicturesByUserid(userid);
     }
+
+    @GetMapping("/user/{userid}/pictures-jdbc") // use JDBC
+    public List<Picture> getAllPicturesByUseridJdbc(@PathVariable Long userid){
+        return proPicDao.getAllPicturesByUserid(userid);
+    }
+
 
     @GetMapping("/user/pictures/{id}")
     public ResponseEntity<Picture> getAProPicture(@PathVariable(value = "id") Long pictureId)
